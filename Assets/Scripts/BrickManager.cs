@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
 public class BrickManager : MonoBehaviour
 {
+	[SerializeField]
 	private List<GameObject> m_Bricks = new List<GameObject>();
 
 	public GameObject brickPrefab;
@@ -13,27 +15,30 @@ public class BrickManager : MonoBehaviour
 	[Range(1, 20)]
 	public int yCount = 8;
 
+	[SerializeField]
 	private int currXCount = 0;
+	[SerializeField]
 	private int currYCount = 0;
 
+	public float spacing = 0.1f;
+	private float currSpacing = 0.0f;
 
 	void Start()
 	{
-		UpdateX();
-		UpdateY();
+		RecalculatePositions();
 	}
 
 
 	void Update()
 	{
-		UpdateX();
-		UpdateY();
+		RecalculatePositions();
 	}
 
-	void UpdateX()
+	/** Returns true if bricks were created or deleted. This means, that the positions need to be recalculated. */
+	bool UpdateX()
 	{
 		if (brickPrefab == null)
-			return;
+			return false;
 
 		if (currXCount < xCount)
 		{
@@ -59,15 +64,20 @@ public class BrickManager : MonoBehaviour
 				m_Bricks.RemoveRange((y + 1) * xCount, currXCount - xCount);
 			}
 		}
+		else
+		{
+			return false;
+		}
 
 		currXCount = xCount;
-		RecalculatePositions();
+		return true;
 	}
 
-	void UpdateY()
+	/** Returns true if bricks were created or deleted. This means, that the positions need to be recalculated. */
+	bool UpdateY()
 	{
 		if (brickPrefab == null)
-			return;
+			return false;
 
 		if (currYCount < yCount)
 		{
@@ -92,13 +102,33 @@ public class BrickManager : MonoBehaviour
 			}
 			m_Bricks.RemoveRange(yCount * currXCount, (currYCount - yCount) * currXCount);
 		}
+		else
+		{
+			return false;
+		}
 
 		currYCount = yCount;
-		RecalculatePositions();
+		return true;
+	}
+
+	/** Returns true if the spacing of the bricks changed. This means, that the positions need to be recalculated. */
+	bool UpdateSpacing()
+	{
+		bool updateRequired = spacing != currSpacing;
+		currSpacing = spacing;
+		return updateRequired;
 	}
 
 	private void RecalculatePositions()
 	{
+		bool needsRecalculation = false;
+		needsRecalculation |= UpdateX();
+		needsRecalculation |= UpdateY();
+		needsRecalculation |= UpdateSpacing();
+
+		if (!needsRecalculation)
+			return;
+
 		for (int y = 0; y < currYCount; ++y)
 		{
 			for (int x = 0; x < currXCount; ++x)
@@ -113,8 +143,8 @@ public class BrickManager : MonoBehaviour
 		if (brickPrefab == null)
 			return Vector3.zero;
 
-		float xPos = (x - (width / 2f)) * brickPrefab.transform.localScale.x;
-		float yPos = (y - (height / 2f)) * brickPrefab.transform.localScale.y;
+		float xPos = (x - (width / 2.0f)) * (brickPrefab.transform.localScale.x + spacing);
+		float yPos = (y - (height / 2.0f)) * (brickPrefab.transform.localScale.y + spacing);
 
 		return new Vector3(xPos, yPos, 0);
 	}
