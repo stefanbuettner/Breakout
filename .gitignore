@@ -55,3 +55,5 @@ ReflectionProbe-*.exr.meta
 
 # temporary scene data like occlusion- and lightmaps
 # This is basically <SceneName>.meta
+XcodeBuild/
+XcodeBuild.zip
