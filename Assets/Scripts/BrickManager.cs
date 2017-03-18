@@ -143,8 +143,8 @@ public class BrickManager : MonoBehaviour
 		if (brickPrefab == null)
 			return Vector3.zero;
 
-		float xPos = (x - (width / 2.0f)) * (brickPrefab.transform.localScale.x + spacing);
-		float yPos = (y - (height / 2.0f)) * (brickPrefab.transform.localScale.y + spacing);
+		float xPos = (x - (width / 2.0f) + 0.5f) * (brickPrefab.transform.localScale.x + spacing);
+		float yPos = (y - (height / 2.0f) + 0.5f) * (brickPrefab.transform.localScale.y + spacing);
 
 		return new Vector3(xPos, yPos, 0);
 	}
