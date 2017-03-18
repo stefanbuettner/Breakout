@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
 public class BrickManager : MonoBehaviour
 {
-	[SerializeField]
+	[SerializeField, HideInInspector]
 	private List<GameObject> m_Bricks = new List<GameObject>();
 
 	public GameObject brickPrefab;
@@ -33,7 +32,7 @@ public class BrickManager : MonoBehaviour
 	{
 		RecalculatePositions();
 	}
-
+#if UNITY_EDITOR
 	/** Returns true if bricks were created or deleted. This means, that the positions need to be recalculated. */
 	bool UpdateX()
 	{
@@ -46,8 +45,8 @@ public class BrickManager : MonoBehaviour
 			{
 				for (int x = currXCount; x < xCount; ++x)
 				{
-					GameObject newBrick = GameObject.Instantiate(brickPrefab,
-																 gameObject.transform);
+					GameObject newBrick = UnityEditor.PrefabUtility.InstantiatePrefab(brickPrefab) as GameObject;
+					newBrick.transform.parent = transform;
 					// Important to use the new xCount!
 					m_Bricks.Insert(y * xCount + currXCount, newBrick);
 				}
@@ -85,8 +84,8 @@ public class BrickManager : MonoBehaviour
 			{
 				for (int x = 0; x < currXCount; ++x)
 				{
-					GameObject newBrick = GameObject.Instantiate(brickPrefab,
-																 gameObject.transform);
+					GameObject newBrick = UnityEditor.PrefabUtility.InstantiatePrefab(brickPrefab) as GameObject;
+					newBrick.transform.parent = transform;
 					m_Bricks.Add(newBrick);
 				}
 			}
@@ -118,9 +117,11 @@ public class BrickManager : MonoBehaviour
 		currSpacing = spacing;
 		return updateRequired;
 	}
+#endif // UNITY_EDITOR
 
 	private void RecalculatePositions()
 	{
+#if UNITY_EDITOR
 		bool needsRecalculation = false;
 		needsRecalculation |= UpdateX();
 		needsRecalculation |= UpdateY();
@@ -128,6 +129,7 @@ public class BrickManager : MonoBehaviour
 
 		if (!needsRecalculation)
 			return;
+#endif // UNITY_EDITOR
 
 		for (int y = 0; y < currYCount; ++y)
 		{
