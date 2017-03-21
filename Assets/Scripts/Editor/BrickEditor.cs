@@ -23,9 +23,15 @@ public class BrickEditor : Editor
         int selectedIndex = ArrayUtility.IndexOf(brickTypeNames, prefabTypeProp.stringValue);
 
         // Display a popup in the top half showing all the reaction types.
-        selectedIndex = EditorGUI.Popup(fullWidthRect, selectedIndex, brickTypeNames);
-
-		//if (PrefabUtility.FindPrefabRoot)
+        int newSelectedIndex = EditorGUI.Popup(fullWidthRect, selectedIndex, brickTypeNames);
+		
+        if (newSelectedIndex != selectedIndex)
+        {
+            SerializedProperty brickMgrProp = serializedObject.FindProperty("brickManager");
+            BrickManager brickMgr = brickMgrProp.objectReferenceValue as BrickManager;
+            brickMgr.ChangeBrickTypeSelection(brickTypeNames[newSelectedIndex]);
+            return;
+        }
 
         // Push the information back from the serializedObject to the target.
         serializedObject.ApplyModifiedProperties ();

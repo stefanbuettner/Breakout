@@ -7,7 +7,7 @@ public class BrickManager : MonoBehaviour
 	[SerializeField, HideInInspector]
 	private List<GameObject> m_Bricks = new List<GameObject>();
 
-	private GameObject brickPrefab;
+	private string defaultBrickPrefabName = "StandardBrick";
 
 	[Range(0, 25)]
 	public int xCount = 17;
@@ -19,8 +19,8 @@ public class BrickManager : MonoBehaviour
 	[SerializeField, HideInInspector]
 	private int currYCount = 0;
 
-	public float xSpacing = 0.1f;
-	public float ySpacing = 0.1f;
+	public float xSpacing = 4.1f;
+	public float ySpacing = 1.1f;
 	[SerializeField, HideInInspector]
 	private float currXSpacing = 0.0f;
 	[SerializeField, HideInInspector]
@@ -31,15 +31,6 @@ public class BrickManager : MonoBehaviour
 		RecalculatePositions();
 	}
 
-	void OnEnable()
-	{
-		if (brickPrefab == null)
-		{
-			brickPrefab = Resources.Load("Bricks/StandardBrick") as GameObject;
-		}
-	}
-
-
 	void Update()
 	{
 		RecalculatePositions();
@@ -48,16 +39,13 @@ public class BrickManager : MonoBehaviour
 	/** Returns true if bricks were created or deleted. This means, that the positions need to be recalculated. */
 	bool UpdateX()
 	{
-		if (brickPrefab == null)
-			return false;
-
 		if (currXCount < xCount)
 		{
 			for (int y = 0; y < currYCount; ++y)
 			{
 				for (int x = currXCount; x < xCount; ++x)
 				{
-					GameObject newBrick = CreateNewBrick();
+					GameObject newBrick = CreateNewBrick(defaultBrickPrefabName);
 					// Important to use the new xCount!
 					m_Bricks.Insert(y * xCount + currXCount, newBrick);
 				}
@@ -86,16 +74,13 @@ public class BrickManager : MonoBehaviour
 	/** Returns true if bricks were created or deleted. This means, that the positions need to be recalculated. */
 	bool UpdateY()
 	{
-		if (brickPrefab == null)
-			return false;
-
 		if (currYCount < yCount)
 		{
 			for (int y = currYCount; y < yCount; ++y)
 			{
 				for (int x = 0; x < currXCount; ++x)
 				{
-					GameObject newBrick = CreateNewBrick();
+					GameObject newBrick = CreateNewBrick(defaultBrickPrefabName);
 					m_Bricks.Add(newBrick);
 				}
 			}
@@ -153,11 +138,8 @@ public class BrickManager : MonoBehaviour
 
 	private Vector3 GetBrickPosition(int x, int y, int width, int height)
 	{
-		if (brickPrefab == null)
-			return Vector3.zero;
-
-		float xPos = (x - (width / 2.0f) + 0.5f) * (brickPrefab.transform.localScale.x + xSpacing);
-		float yPos = (y - (height / 2.0f) + 0.5f) * (brickPrefab.transform.localScale.y + ySpacing);
+		float xPos = (x - (width / 2.0f) + 0.5f) * xSpacing;
+		float yPos = (y - (height / 2.0f) + 0.5f) * ySpacing;
 
 		return new Vector3(xPos, yPos, 0);
 	}
@@ -171,8 +153,9 @@ public class BrickManager : MonoBehaviour
 		m_Bricks.Clear();
 	}
 
-	GameObject CreateNewBrick()
+	GameObject CreateNewBrick(string prefabType)
 	{
+		GameObject brickPrefab = Resources.Load("Bricks/" + prefabType) as GameObject;
 		GameObject newBrick = UnityEditor.PrefabUtility.InstantiatePrefab(brickPrefab) as GameObject;
 		newBrick.transform.parent = transform;
 		Brick brickComponent = newBrick.GetComponent<Brick>();
@@ -182,5 +165,19 @@ public class BrickManager : MonoBehaviour
 		brickComponent.prefabType = newBrick.name;
 
 		return newBrick;
+	}
+
+	public void ChangeBrickTypeSelection(string brickType)
+	{
+		foreach (GameObject go in UnityEditor.Selection.gameObjects)
+		{
+			int idx = m_Bricks.IndexOf(go);
+			GameObject newBrick = CreateNewBrick(brickType);
+			newBrick.transform.position = go.transform.position;
+			newBrick.transform.rotation = go.transform.rotation;
+			newBrick.transform.localScale = go.transform.localScale;
+			GameObject.DestroyImmediate(go);
+			m_Bricks[idx] = newBrick;
+		}
 	}
 }
