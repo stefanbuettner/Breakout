@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [ExecuteInEditMode]
-public class Brick : MonoBehaviour
+public class BrickType : MonoBehaviour
 {
 	[SerializeField, HideInInspector]
 	private BrickManager brickManager;

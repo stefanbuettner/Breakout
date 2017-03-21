@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Ball : MonoBehaviour
 {
-
-    Vector3 startingPosition = Vector3.zero;
+    Vector3 startingPosition = new Vector3(0f, 1.5f, 0f);
     Vector3 startingSpeed = new Vector3(0f, 8f, 0f);
     Rigidbody rb;
 
@@ -18,13 +16,14 @@ public class Ball : MonoBehaviour
     public void reset()
     {
         rb.velocity = Vector3.zero;
-        this.gameObject.transform.position = startingPosition;
-        Invoke("resetStartingSpeed", 1);
+        this.gameObject.transform.localPosition = startingPosition;
+        gameObject.transform.parent = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    void resetStartingSpeed()
+    public void Shoot()
     {
         rb.velocity = startingSpeed;
+        transform.parent = null;
     }
 
     void OnCollisionEnter(Collision collision)

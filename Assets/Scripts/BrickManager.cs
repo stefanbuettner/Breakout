@@ -158,9 +158,9 @@ public class BrickManager : MonoBehaviour
 		GameObject brickPrefab = Resources.Load("Bricks/" + prefabType) as GameObject;
 		GameObject newBrick = UnityEditor.PrefabUtility.InstantiatePrefab(brickPrefab) as GameObject;
 		newBrick.transform.parent = transform;
-		Brick brickComponent = newBrick.GetComponent<Brick>();
+		BrickType brickComponent = newBrick.GetComponent<BrickType>();
 		if (brickComponent == null)
-			brickComponent = newBrick.AddComponent<Brick>();
+			brickComponent = newBrick.AddComponent<BrickType>();
 		brickComponent.SetBrickManager(this);
 		brickComponent.prefabType = newBrick.name;
 

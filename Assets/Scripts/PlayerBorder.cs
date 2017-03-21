@@ -2,8 +2,7 @@
 
 public class PlayerBorder : MonoBehaviour
 {
-
-    public GameControl gc;
+    //public GameControl gc;
     public int timesHit;
 
     // Use this for initialization
@@ -17,7 +16,7 @@ public class PlayerBorder : MonoBehaviour
         if (other.gameObject.CompareTag("Ball"))
         {
             timesHit++;
-            gc.rewrite();
+            //gc.rewrite();
         }
     }
 }
