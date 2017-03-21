@@ -4,7 +4,8 @@ public class PlayerControls : MonoBehaviour
 {
     public GameObject ballPrefab;
 
-    public Vector3 ballPosition = new Vector3(0f, 1.5f, 0f);
+    public Vector3 initialBallPosition = new Vector3(0f, 1.5f, 0f);
+    public Vector3 initialBallSpeed = new Vector3(0f, 8f, 0f);
     private Ball ballToShoot;
 
     public void Reset()
@@ -18,7 +19,7 @@ public class PlayerControls : MonoBehaviour
             Destroy(ballToShoot.gameObject);
 
         GameObject newBall = GameObject.Instantiate(ballPrefab, transform) as GameObject;
-        newBall.transform.localPosition = ballPosition;
+        newBall.transform.localPosition = initialBallPosition;
         ballToShoot = newBall.GetComponent<Ball>();
     }
 
@@ -32,7 +33,7 @@ public class PlayerControls : MonoBehaviour
         {
             if (ballToShoot != null)
             {
-                ballToShoot.Shoot();
+                ballToShoot.Shoot(initialBallSpeed);
                 ballToShoot = null;
             }
         }

@@ -15,9 +15,8 @@ public class StandardBrick : MonoBehaviour
 	{
 		if (col.collider.CompareTag("Ball"))
 		{
-			Debug.Log("Ball hit " + name);
 			gameObject.SetActive(false);
-			gameControl.points += hitPoints;
+			gameControl.BrickHit(hitPoints, col.gameObject.GetComponent<Ball>());
 		}
 	}
 }
