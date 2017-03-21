@@ -1,38 +1,36 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-
-public class GameController : MonoBehaviour
+[RequireComponent(typeof(TextMesh))]
+public class GameControl : MonoBehaviour
 {
+    public TextMesh turnDisplay;
+    public TextMesh pointsDisplay;
 
-    public PlayerBorder borderTop, borderBottom;
-    private TextMesh tm;
+    public int turns = 3;
+    public int points = 0;
 
     // Use this for initialization
     void Start()
     {
-        tm = GetComponent<TextMesh>();
-        rewrite();
+        Reset();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            reset();
-        }
+        UpdateDisplays();
     }
 
-    void reset()
+    void Reset()
     {
-        borderTop.timesHit = 0;
-        borderBottom.timesHit = 0;
-        rewrite();
+        turns = 3;
+        points = 0;
+        UpdateDisplays();
     }
 
-    public void rewrite()
+    void UpdateDisplays()
     {
-        tm.text = borderBottom.timesHit + "\n" + borderTop.timesHit;
+        pointsDisplay.text = points.ToString();
+        turnDisplay.text = turns.ToString();
     }
 }
