@@ -57,12 +57,7 @@ public class BrickManager : MonoBehaviour
 			{
 				for (int x = currXCount; x < xCount; ++x)
 				{
-					GameObject newBrick = UnityEditor.PrefabUtility.InstantiatePrefab(brickPrefab) as GameObject;
-					newBrick.transform.parent = transform;
-					Brick brickComponent = newBrick.GetComponent<Brick>();
-					if (brickComponent == null)
-						brickComponent = newBrick.AddComponent<Brick>();
-					brickComponent.SetBrickManager(this);
+					GameObject newBrick = CreateNewBrick();
 					// Important to use the new xCount!
 					m_Bricks.Insert(y * xCount + currXCount, newBrick);
 				}
@@ -100,12 +95,7 @@ public class BrickManager : MonoBehaviour
 			{
 				for (int x = 0; x < currXCount; ++x)
 				{
-					GameObject newBrick = UnityEditor.PrefabUtility.InstantiatePrefab(brickPrefab) as GameObject;
-					newBrick.transform.parent = transform;
-					Brick brickComponent = newBrick.GetComponent<Brick>();
-					if (brickComponent == null)
-						brickComponent = newBrick.AddComponent<Brick>();
-					brickComponent.SetBrickManager(this);
+					GameObject newBrick = CreateNewBrick();
 					m_Bricks.Add(newBrick);
 				}
 			}
@@ -179,5 +169,18 @@ public class BrickManager : MonoBehaviour
 			GameObject.DestroyImmediate(brick);
 		}
 		m_Bricks.Clear();
+	}
+
+	GameObject CreateNewBrick()
+	{
+		GameObject newBrick = UnityEditor.PrefabUtility.InstantiatePrefab(brickPrefab) as GameObject;
+		newBrick.transform.parent = transform;
+		Brick brickComponent = newBrick.GetComponent<Brick>();
+		if (brickComponent == null)
+			brickComponent = newBrick.AddComponent<Brick>();
+		brickComponent.SetBrickManager(this);
+		brickComponent.prefabType = newBrick.name;
+
+		return newBrick;
 	}
 }

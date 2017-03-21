@@ -1,16 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEditor;
 
-public class editorScripts : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+public class editorScripts : MonoBehaviour
+{
+	[MenuItem("Breakout/PrefabInfo")]
+	static void Blaa()
+	{
+		Debug.Log((PrefabUtility.GetPrefabObject(Selection.activeGameObject).name));
 	}
 }
