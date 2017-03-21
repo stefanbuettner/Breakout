@@ -43,7 +43,7 @@ public class GameControl : MonoBehaviour
 
     void UpdateDisplays()
     {
-        pointsDisplay.text = points.ToString();
+        pointsDisplay.text = points.ToString("D3");
         turnDisplay.text = turns.ToString();
     }
 }
