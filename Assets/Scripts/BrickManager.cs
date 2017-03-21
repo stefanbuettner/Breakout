@@ -14,12 +14,13 @@ public class BrickManager : MonoBehaviour
 	[Range(1, 20)]
 	public int yCount = 8;
 
-	[SerializeField]
+	[SerializeField, HideInInspector]
 	private int currXCount = 0;
-	[SerializeField]
+	[SerializeField, HideInInspector]
 	private int currYCount = 0;
 
 	public float spacing = 0.1f;
+	[SerializeField, HideInInspector]
 	private float currSpacing = 0.0f;
 
 	void Start()
