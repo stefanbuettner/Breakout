@@ -10,10 +10,10 @@ public class Ball : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        reset();
+        Reset();
     }
 
-    public void reset()
+    public void Reset()
     {
         rb.velocity = Vector3.zero;
         this.gameObject.transform.localPosition = startingPosition;

@@ -5,6 +5,7 @@ public class GameControl : MonoBehaviour
 {
     public TextMesh turnDisplay;
     public TextMesh pointsDisplay;
+    public PlayerControls player;
 
     public int turns = 3;
     public int points = 0;
@@ -26,6 +27,18 @@ public class GameControl : MonoBehaviour
         turns = 3;
         points = 0;
         UpdateDisplays();
+        player.Reset();
+    }
+
+    public void EndTurn()
+    {
+        if (turns > 0)
+        {
+            turns = turns - 1;
+            player.SpawnNewBall();
+        }
+        else
+            Debug.Log("Game ended");
     }
 
     void UpdateDisplays()

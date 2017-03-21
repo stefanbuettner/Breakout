@@ -13,7 +13,11 @@ public class StandardBrick : MonoBehaviour
 
 	void OnCollisionEnter(Collision col)
 	{
-		gameObject.SetActive(false);
-		gameControl.points += hitPoints;
+		if (col.collider.CompareTag("Ball"))
+		{
+			Debug.Log("Ball hit " + name);
+			gameObject.SetActive(false);
+			gameControl.points += hitPoints;
+		}
 	}
 }
