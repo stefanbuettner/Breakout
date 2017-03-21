@@ -161,7 +161,7 @@ public class BrickManager : MonoBehaviour
 		BrickType brickComponent = newBrick.GetComponent<BrickType>();
 		if (brickComponent == null)
 			brickComponent = newBrick.AddComponent<BrickType>();
-		brickComponent.SetBrickManager(this);
+		brickComponent.brickManager = this;
 		brickComponent.prefabType = newBrick.name;
 
 		return newBrick;
