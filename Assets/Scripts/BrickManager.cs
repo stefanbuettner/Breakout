@@ -7,7 +7,9 @@ public class BrickManager : MonoBehaviour
 	[SerializeField, HideInInspector]
 	private List<GameObject> m_Bricks = new List<GameObject>();
 
+#if UNITY_EDITOR
 	private string defaultBrickPrefabName = "StandardBrick";
+#endif
 
 	[Range(0, 25)]
 	public int xCount = 17;
