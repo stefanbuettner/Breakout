@@ -138,8 +138,8 @@ public class BrickManager : MonoBehaviour
 
 	private Vector3 GetBrickPosition(int x, int y, int width, int height)
 	{
-		float xPos = (x - (width / 2.0f) + 0.5f) * xSpacing;
-		float yPos = (y - (height / 2.0f) + 0.5f) * ySpacing;
+		float xPos = (x - (width / 2.0f) + 0.5f) * currXSpacing;
+		float yPos = (y - (height / 2.0f) + 0.5f) * currYSpacing;
 
 		return new Vector3(xPos, yPos, 0);
 	}
@@ -153,6 +153,7 @@ public class BrickManager : MonoBehaviour
 		m_Bricks.Clear();
 	}
 
+#if UNITY_EDITOR
 	GameObject CreateNewBrick(string prefabType)
 	{
 		GameObject brickPrefab = Resources.Load("Bricks/" + prefabType) as GameObject;
@@ -180,4 +181,5 @@ public class BrickManager : MonoBehaviour
 			m_Bricks[idx] = newBrick;
 		}
 	}
+#endif
 }
