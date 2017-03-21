@@ -7,11 +7,11 @@ public class BrickManager : MonoBehaviour
 	[SerializeField, HideInInspector]
 	private List<GameObject> m_Bricks = new List<GameObject>();
 
-	public GameObject brickPrefab;
+	private GameObject brickPrefab;
 
-	[Range(1, 25)]
+	[Range(0, 25)]
 	public int xCount = 17;
-	[Range(1, 20)]
+	[Range(0, 20)]
 	public int yCount = 8;
 
 	[SerializeField, HideInInspector]
@@ -19,13 +19,24 @@ public class BrickManager : MonoBehaviour
 	[SerializeField, HideInInspector]
 	private int currYCount = 0;
 
-	public float spacing = 0.1f;
+	public float xSpacing = 0.1f;
+	public float ySpacing = 0.1f;
 	[SerializeField, HideInInspector]
-	private float currSpacing = 0.0f;
+	private float currXSpacing = 0.0f;
+	[SerializeField, HideInInspector]
+	private float currYSpacing = 0.0f;
 
 	void Start()
 	{
 		RecalculatePositions();
+	}
+
+	void OnEnable()
+	{
+		if (brickPrefab == null)
+		{
+			brickPrefab = Resources.Load("Bricks/StandardBrick") as GameObject;
+		}
 	}
 
 
@@ -48,6 +59,10 @@ public class BrickManager : MonoBehaviour
 				{
 					GameObject newBrick = UnityEditor.PrefabUtility.InstantiatePrefab(brickPrefab) as GameObject;
 					newBrick.transform.parent = transform;
+					Brick brickComponent = newBrick.GetComponent<Brick>();
+					if (brickComponent == null)
+						brickComponent = newBrick.AddComponent<Brick>();
+					brickComponent.SetBrickManager(this);
 					// Important to use the new xCount!
 					m_Bricks.Insert(y * xCount + currXCount, newBrick);
 				}
@@ -87,6 +102,10 @@ public class BrickManager : MonoBehaviour
 				{
 					GameObject newBrick = UnityEditor.PrefabUtility.InstantiatePrefab(brickPrefab) as GameObject;
 					newBrick.transform.parent = transform;
+					Brick brickComponent = newBrick.GetComponent<Brick>();
+					if (brickComponent == null)
+						brickComponent = newBrick.AddComponent<Brick>();
+					brickComponent.SetBrickManager(this);
 					m_Bricks.Add(newBrick);
 				}
 			}
@@ -114,8 +133,9 @@ public class BrickManager : MonoBehaviour
 	/** Returns true if the spacing of the bricks changed. This means, that the positions need to be recalculated. */
 	bool UpdateSpacing()
 	{
-		bool updateRequired = spacing != currSpacing;
-		currSpacing = spacing;
+		bool updateRequired = (xSpacing != currXSpacing) || (ySpacing != currYSpacing);
+		currXSpacing = xSpacing;
+		currYSpacing = ySpacing;
 		return updateRequired;
 	}
 #endif // UNITY_EDITOR
@@ -146,8 +166,8 @@ public class BrickManager : MonoBehaviour
 		if (brickPrefab == null)
 			return Vector3.zero;
 
-		float xPos = (x - (width / 2.0f) + 0.5f) * (brickPrefab.transform.localScale.x + spacing);
-		float yPos = (y - (height / 2.0f) + 0.5f) * (brickPrefab.transform.localScale.y + spacing);
+		float xPos = (x - (width / 2.0f) + 0.5f) * (brickPrefab.transform.localScale.x + xSpacing);
+		float yPos = (y - (height / 2.0f) + 0.5f) * (brickPrefab.transform.localScale.y + ySpacing);
 
 		return new Vector3(xPos, yPos, 0);
 	}

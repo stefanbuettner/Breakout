@@ -3,16 +3,10 @@
 [ExecuteInEditMode]
 public class Brick : MonoBehaviour
 {
-	[SerializeField, HideInInspector]
-	private GameObject m_BrickInstance;
+	private BrickManager brickManager;
 
-	void Awake()
+	public void SetBrickManager(BrickManager mgr)
 	{
-		if (m_BrickInstance == null)
-		{
-			Object stdBrick = Resources.Load("Bricks/StandardBrick");
-			m_BrickInstance = UnityEditor.PrefabUtility.InstantiatePrefab(stdBrick) as GameObject;
-			m_BrickInstance.transform.parent = transform;
-		}
+		brickManager = mgr;
 	}
 }

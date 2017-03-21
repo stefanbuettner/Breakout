@@ -2,12 +2,11 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(Brick))]
+[CustomEditor(typeof(Brick)), CanEditMultipleObjects]
 public class BrickEditor : Editor
 {
 	Object[] brickPrefabs;
 	private string[] brickTypeNames;
-	private int selectedIndex;
 
 	public override void OnInspectorGUI()
 	{
@@ -19,6 +18,8 @@ public class BrickEditor : Editor
 		fullWidthRect.y += 5f;
 
 		SetReactionNamesArray();
+
+        int selectedIndex = 0;
 
         // Display a popup in the top half showing all the reaction types.
         selectedIndex = EditorGUI.Popup(fullWidthRect, selectedIndex, brickTypeNames);
