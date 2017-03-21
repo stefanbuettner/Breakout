@@ -3,6 +3,7 @@
 public class Ball : MonoBehaviour
 {
     private Rigidbody rb;
+    public float horizontalSpeedGain = 1.5f;
 
     // Use this for initialization
     void Start()
@@ -20,11 +21,11 @@ public class Ball : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            //if we collide with a player, we become faster
-            //rb.velocity *= 1.1f;
             //we also gain a little speed away from his center
             float addSpeed = (this.gameObject.transform.position.x - collision.gameObject.transform.position.x);
-            rb.velocity += new Vector3(addSpeed, 0, 0);
+            float speed = rb.velocity.magnitude;
+            rb.velocity += new Vector3(addSpeed * horizontalSpeedGain, 0, 0);
+            rb.velocity = rb.velocity.normalized * speed;
         }
     }
 }
