@@ -7,4 +7,9 @@ public class BrickType : MonoBehaviour
 	public BrickManager brickManager;
 	[HideInInspector]
 	public string prefabType = "";
+
+	void OnDestroy()
+	{
+		brickManager.OnBrickDestroyed(gameObject);
+	}
 }

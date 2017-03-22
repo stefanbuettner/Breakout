@@ -37,6 +37,16 @@ public class BrickManager : MonoBehaviour
 	{
 		RecalculatePositions();
 	}
+
+	public void Reset()
+	{
+		foreach (GameObject brick in m_Bricks)
+		{
+			if (brick != null)
+				brick.SetActive(true);
+		}
+	}
+
 #if UNITY_EDITOR
 	/** Returns true if bricks were created or deleted. This means, that the positions need to be recalculated. */
 	bool UpdateX()
@@ -59,7 +69,9 @@ public class BrickManager : MonoBehaviour
 			{
 				for (int x = 0; x < currXCount - xCount; ++x)
 				{
-					GameObject.DestroyImmediate(m_Bricks[(y + 1) * xCount + x]);
+					GameObject brick = m_Bricks[x + (y + 1) * xCount];
+					if (brick != null)
+						GameObject.DestroyImmediate(brick);
 				}
 				m_Bricks.RemoveRange((y + 1) * xCount, currXCount - xCount);
 			}
@@ -93,7 +105,9 @@ public class BrickManager : MonoBehaviour
 			{
 				for (int x = 0; x < currXCount; ++x)
 				{
-					GameObject.DestroyImmediate(m_Bricks[y * currXCount + x]);
+					GameObject brick = m_Bricks[x + y * currXCount];
+					if (brick != null)
+						GameObject.DestroyImmediate(brick);
 				}
 			}
 			m_Bricks.RemoveRange(yCount * currXCount, (currYCount - yCount) * currXCount);
@@ -133,7 +147,9 @@ public class BrickManager : MonoBehaviour
 		{
 			for (int x = 0; x < currXCount; ++x)
 			{
-				m_Bricks[x + y * currXCount].transform.position = GetBrickPosition(x, y, currXCount, currYCount);
+				GameObject brick = m_Bricks[x + y *currXCount];
+				if (brick != null)
+					brick.transform.position = GetBrickPosition(x, y, currXCount, currYCount);
 			}
 		}
 	}
@@ -150,7 +166,8 @@ public class BrickManager : MonoBehaviour
 	{
 		foreach (GameObject brick in m_Bricks)
 		{
-			GameObject.DestroyImmediate(brick);
+			if (brick != null)
+				GameObject.DestroyImmediate(brick);
 		}
 		m_Bricks.Clear();
 	}
@@ -184,4 +201,10 @@ public class BrickManager : MonoBehaviour
 		}
 	}
 #endif
+
+	public void OnBrickDestroyed(GameObject brick)
+	{
+		int i = m_Bricks.IndexOf(brick);
+		m_Bricks[i] = null;
+	}
 }

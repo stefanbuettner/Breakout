@@ -6,6 +6,8 @@ public class GameControl : MonoBehaviour
     public TextMesh turnDisplay;
     public TextMesh pointsDisplay;
     public PlayerControls player;
+    public BrickManager brickMgr;
+    public GameObject gameOverMenu;
 
     public int turns = 3;
     public int points = 0;
@@ -25,17 +27,25 @@ public class GameControl : MonoBehaviour
         UpdateDisplays();
         if (Input.GetKeyUp(KeyCode.Escape))
         {
-            Application.Quit();
+            Shutdown();
         }
     }
 
-    void Reset()
+    public void Shutdown()
+    {
+        Application.Quit();
+    }
+
+    public void Reset()
     {
         turns = 3;
         points = 0;
         numBrickHits = 0;
         UpdateDisplays();
+        gameOverMenu.SetActive(false);
+        player.enabled = true;
         player.Reset();
+        brickMgr.Reset();
     }
 
     public void EndTurn()
@@ -45,7 +55,10 @@ public class GameControl : MonoBehaviour
             if (turns > 1)
                 player.SpawnNewBall();
             else
-                Debug.Log("Game ended");
+            {
+                player.enabled = false;
+                gameOverMenu.SetActive(true);
+            }
             turns = turns - 1;
         }
     }
