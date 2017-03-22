@@ -7,7 +7,7 @@ public class GameControl : MonoBehaviour
     public TextMesh pointsDisplay;
     public PlayerControls player;
     public BrickManager brickMgr;
-    public GameObject gameOverMenu;
+    public GameOverMenu gameOverMenu;
 
     public int turns = 3;
     public int points = 0;
@@ -42,7 +42,7 @@ public class GameControl : MonoBehaviour
         points = 0;
         numBrickHits = 0;
         UpdateDisplays();
-        gameOverMenu.SetActive(false);
+        gameOverMenu.gameObject.SetActive(false);
         player.enabled = true;
         player.Reset();
         brickMgr.Reset();
@@ -57,7 +57,8 @@ public class GameControl : MonoBehaviour
             else
             {
                 player.enabled = false;
-                gameOverMenu.SetActive(true);
+                gameOverMenu.DisplayWin(false);
+                gameOverMenu.gameObject.SetActive(true);
             }
             turns = turns - 1;
         }
@@ -66,7 +67,8 @@ public class GameControl : MonoBehaviour
     public void GameWon()
     {
         player.enabled = false;
-        gameOverMenu.SetActive(true);
+        gameOverMenu.DisplayWin(true);
+        gameOverMenu.gameObject.SetActive(true);
         foreach (Ball ball in GameObject.FindObjectsOfType<Ball>())
         {
             Destroy(ball.gameObject);

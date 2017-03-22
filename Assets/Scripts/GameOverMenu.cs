@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameOverMenu : MonoBehaviour
 {
 	public GameControl gameControl;
+	public GameObject winText;
 
 	public void PlayAgain()
 	{
@@ -15,5 +16,10 @@ public class GameOverMenu : MonoBehaviour
 	public void Quit()
 	{
 		gameControl.Shutdown();
+	}
+
+	public void DisplayWin(bool win)
+	{
+		winText.SetActive(win);
 	}
 }
