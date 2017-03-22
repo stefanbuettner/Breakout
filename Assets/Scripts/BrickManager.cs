@@ -205,6 +205,7 @@ public class BrickManager : MonoBehaviour
 	public void OnBrickDestroyed(GameObject brick)
 	{
 		int i = m_Bricks.IndexOf(brick);
-		m_Bricks[i] = null;
+		if ((0 < i) && (i < m_Bricks.Count))
+			m_Bricks[i] = null;
 	}
 }
