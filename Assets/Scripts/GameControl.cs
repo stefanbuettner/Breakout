@@ -63,6 +63,16 @@ public class GameControl : MonoBehaviour
         }
     }
 
+    public void GameWon()
+    {
+        player.enabled = false;
+        gameOverMenu.SetActive(true);
+        foreach (Ball ball in GameObject.FindObjectsOfType<Ball>())
+        {
+            Destroy(ball.gameObject);
+        }
+    }
+
     public void BrickHit(int brickHitPoints, Ball ball)
     {
         points += brickHitPoints;

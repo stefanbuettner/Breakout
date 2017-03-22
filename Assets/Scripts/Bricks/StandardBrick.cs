@@ -3,12 +3,12 @@
 [RequireComponent(typeof(Collider))]
 public class StandardBrick : MonoBehaviour
 {
-	private GameControl gameControl;
+	private BrickManager gameControl;
 	public int hitPoints = 1;
 
 	void Start()
 	{
-		gameControl = FindObjectOfType<GameControl>();
+		gameControl = FindObjectOfType<BrickManager>();
 	}
 
 	void OnCollisionEnter(Collision col)

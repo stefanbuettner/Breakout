@@ -4,8 +4,12 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class BrickManager : MonoBehaviour
 {
+	public GameControl gameControl;
+
 	[SerializeField, HideInInspector]
 	private List<GameObject> m_Bricks = new List<GameObject>();
+	[SerializeField, HideInInspector]
+	private int activeBricks = 0;
 
 #if UNITY_EDITOR
 	private string defaultBrickPrefabName = "StandardBrick";
@@ -40,10 +44,14 @@ public class BrickManager : MonoBehaviour
 
 	public void Reset()
 	{
+		activeBricks = 0;
 		foreach (GameObject brick in m_Bricks)
 		{
 			if (brick != null)
+			{
 				brick.SetActive(true);
+				++activeBricks;
+			}
 		}
 	}
 
@@ -207,5 +215,14 @@ public class BrickManager : MonoBehaviour
 		int i = m_Bricks.IndexOf(brick);
 		if ((0 < i) && (i < m_Bricks.Count))
 			m_Bricks[i] = null;
+	}
+
+
+	public void BrickHit(int hitPoints, Ball ball)
+	{
+		--activeBricks;
+		gameControl.BrickHit(hitPoints, ball);
+		if (activeBricks <= 0)
+			gameControl.Invoke("GameWon", 0.5f);
 	}
 }
