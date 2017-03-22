@@ -149,7 +149,7 @@ public class BrickManager : MonoBehaviour
 			{
 				GameObject brick = m_Bricks[x + y *currXCount];
 				if (brick != null)
-					brick.transform.position = GetBrickPosition(x, y, currXCount, currYCount);
+					brick.transform.localPosition = GetBrickPosition(x, y, currXCount, currYCount);
 			}
 		}
 	}
