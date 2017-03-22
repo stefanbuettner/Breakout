@@ -37,11 +37,13 @@ public class PlayerControls : MonoBehaviour
         // mousePos.z = transform.position.z;
         // transform.position = Vector3.MoveTowards(transform.position, mousePos, 1.0f);
 
-        float movement = CrossPlatformInputManager.GetAxis("Mouse X");
+        //float movement = CrossPlatformInputManager.GetAxis("Mouse X");
+        float movement = Input.GetAxis("Mouse X");
         this.gameObject.transform.Translate(movement, 0, 0);
 
 
-        if (CrossPlatformInputManager.GetButtonUp("Fire1"))
+        //if (CrossPlatformInputManager.GetButtonUp("Fire1"))
+        if (Input.GetButtonDown("Fire1"))
         {
             if (ballToShoot != null)
             {

@@ -23,6 +23,10 @@ public class GameControl : MonoBehaviour
     void Update()
     {
         UpdateDisplays();
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     void Reset()
