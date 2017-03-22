@@ -1,18 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameOverMenu : MonoBehaviour
 {
-	public GameControl gc;
+	public GameControl gameControl;
 
 	public void PlayAgain()
 	{
-		gc.Reset();
+		gameControl.Reset();
 	}
 
 	public void Quit()
 	{
-		gc.Shutdown();
+		gameControl.Shutdown();
 	}
 }
