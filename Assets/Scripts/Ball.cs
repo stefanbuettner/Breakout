@@ -9,10 +9,12 @@ public class Ball : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true;
     }
 
     public void Shoot(Vector3 initialSpeed)
     {
+        rb.isKinematic = false;
         rb.velocity = initialSpeed;
         transform.parent = null;
     }
