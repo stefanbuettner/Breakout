@@ -4,20 +4,31 @@
 public class PlayerControls : MonoBehaviour
 {
     public GameObject ballPrefab;
-    public GameObject paddle;
+    private GameObject paddle;
 
     public Vector3 initialBallPosition = new Vector3(0f, 1.5f, 0f);
-    public Vector3 initialBallSpeed = new Vector3(0f, 8f, 0f);
+    [SerializeField]
+    private float defaultShotSpeed = 8f;
+    [HideInInspector]
+    public float shotSpeed;
     private Ball ballToShoot;
 
     public float paddleSpeed = 2f;
 
     void Awake()
     {
+        paddle = GameObject.FindGameObjectWithTag("Paddle");
         GetComponent<ConfigurableJoint>().connectedBody = paddle.GetComponent<Rigidbody>();
+        Reset();
     }
 
     public void Reset()
+    {
+        SpawnNewBall();
+        shotSpeed = defaultShotSpeed;
+    }
+
+    public void TurnReset()
     {
         SpawnNewBall();
     }
@@ -54,7 +65,7 @@ public class PlayerControls : MonoBehaviour
         {
             if (ballToShoot != null)
             {
-                ballToShoot.Shoot(initialBallSpeed);
+                ballToShoot.Shoot(Vector3.up * shotSpeed);
                 ballToShoot = null;
             }
         }

@@ -3,19 +3,28 @@
 [RequireComponent(typeof(TextMesh))]
 public class GameControl : MonoBehaviour
 {
-    public TextMesh turnDisplay;
-    public TextMesh pointsDisplay;
-    public PlayerControls player;
-    public BrickManager brickManager;
-    public GameOverMenu gameOverMenu;
-    public PlayerBorder topBorder;
-    public PlayArea playArea;
+    private StatsDisplay statsDisplay;
+    private PlayerControls player;
+    private BrickManager brickManager;
+    private GameOverMenu gameOverMenu;
+    private PlayerBorder topBorder;
+    private PlayArea playArea;
 
     public int turns = 3;
     public int points = 0;
     private int numBrickHits = 0;
 
     public float speedGain = 4f;
+
+    void Awake()
+    {
+        statsDisplay = FindObjectOfType<StatsDisplay>();
+        player = FindObjectOfType<PlayerControls>();
+        brickManager = FindObjectOfType<BrickManager>();
+        gameOverMenu = FindObjectOfType<GameOverMenu>();
+        topBorder = FindObjectOfType<PlayerBorder>();
+        playArea = FindObjectOfType<PlayArea>();
+    }
 
     // Use this for initialization
     void Start()
@@ -51,6 +60,12 @@ public class GameControl : MonoBehaviour
         }
     }
 
+    void UpdateDisplays()
+    {
+        statsDisplay.SetPoints(points);
+        statsDisplay.SetTurns(turns);
+    }
+
     public void Shutdown()
     {
         Application.Quit();
@@ -73,21 +88,19 @@ public class GameControl : MonoBehaviour
         if (turns > 0)
         {
             if (turns > 1)
-                player.SpawnNewBall();
+                player.TurnReset();
             else
             {
-                player.enabled = false;
-                gameOverMenu.DisplayWin(false);
-                gameOverMenu.gameObject.SetActive(true);
+                EndLevel(false);
             }
             turns = turns - 1;
         }
     }
 
-    public void GameWon()
+    public void EndLevel(bool won)
     {
         player.enabled = false;
-        gameOverMenu.DisplayWin(true);
+        gameOverMenu.DisplayWin(won);
         gameOverMenu.gameObject.SetActive(true);
         foreach (Ball ball in GameObject.FindObjectsOfType<Ball>())
         {
@@ -109,15 +122,14 @@ public class GameControl : MonoBehaviour
                 case 12:
                     Rigidbody ballRB = ball.GetComponent<Rigidbody>();
                     ballRB.velocity += ballRB.velocity.normalized * speedGain;
-                    player.initialBallSpeed += player.initialBallSpeed.normalized * speedGain;
+                    player.shotSpeed += speedGain;
                     Debug.Log("Speed increase after " + numBrickHits + " hits");
                     break;
             }
 
             if (brickManager.GetActiveBricks() <= 0)
             {
-                // Add some delay until the game is won.
-                Invoke("GameWon", 0.1f);
+                EndLevel(true);
             }
         }
 
@@ -126,20 +138,14 @@ public class GameControl : MonoBehaviour
         {
             Rigidbody ballRB = ball.GetComponent<Rigidbody>();
             ballRB.velocity += ballRB.velocity.normalized * border.speedGain;
-            player.initialBallSpeed += player.initialBallSpeed.normalized * border.speedGain;
+            player.shotSpeed += border.speedGain;
             Debug.Log("Speed gained by hitting " + name + ": " + speedGain);
         }
-    }
-
-    void UpdateDisplays()
-    {
-        pointsDisplay.text = points.ToString("D3");
-        turnDisplay.text = turns.ToString();
     }
 
     public void BallLost(Ball ball, Hittable playArea)
     {
         EndTurn();
-        Destroy(ball);
+        Destroy(ball.gameObject);
     }
 }

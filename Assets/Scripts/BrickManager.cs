@@ -63,11 +63,6 @@ public class BrickManager : MonoBehaviour
 		}
 	}
 
-	void Update()
-	{
-		RecalculatePositions();
-	}
-
 	public void Reset()
 	{
 		activeBricks = 0;
@@ -82,6 +77,12 @@ public class BrickManager : MonoBehaviour
 	}
 
 #if UNITY_EDITOR
+	void Update()
+	{
+		RecalculatePositions();
+	}
+
+
 	/** Returns true if bricks were created or deleted. This means, that the positions need to be recalculated. */
 	bool UpdateX()
 	{

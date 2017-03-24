@@ -21,7 +21,7 @@ public class Ball : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Paddle"))
         {
             //we also gain a little speed away from his center
             float addSpeed = (this.gameObject.transform.position.x - collision.gameObject.transform.position.x);
