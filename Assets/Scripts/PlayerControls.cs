@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using UnityStandardAssets.CrossPlatformInput;
 
+[RequireComponent(typeof(ConfigurableJoint))]
 public class PlayerControls : MonoBehaviour
 {
     public GameObject ballPrefab;
-    public Camera playerCam;
     public GameObject paddle;
 
     public Vector3 initialBallPosition = new Vector3(0f, 1.5f, 0f);
@@ -13,6 +12,10 @@ public class PlayerControls : MonoBehaviour
 
     public float paddleSpeed = 2f;
 
+    void Awake()
+    {
+        GetComponent<ConfigurableJoint>().connectedBody = paddle.GetComponent<Rigidbody>();
+    }
 
     public void Reset()
     {
@@ -35,7 +38,7 @@ public class PlayerControls : MonoBehaviour
 
         // Vector3 mousePos = CrossPlatformInputManager.mousePosition;
         Vector3 mousePos = Input.mousePosition;
-        Ray r = playerCam.ScreenPointToRay(mousePos);
+        Ray r = Camera.main.ScreenPointToRay(mousePos);
         mousePos = r.origin;
         mousePos.y = transform.position.y;
         mousePos.z = transform.position.z;

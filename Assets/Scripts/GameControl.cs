@@ -8,6 +8,8 @@ public class GameControl : MonoBehaviour
     public PlayerControls player;
     public BrickManager brickMgr;
     public GameOverMenu gameOverMenu;
+    public PlayerBorder topBorder;
+    public PlayArea playArea;
 
     public int turns = 3;
     public int points = 0;
@@ -19,6 +21,22 @@ public class GameControl : MonoBehaviour
     void Start()
     {
         Reset();
+    }
+
+    void OnEnable()
+    {
+        gameOverMenu.OnPlayAgain += Reset;
+        gameOverMenu.OnQuit += Shutdown;
+        topBorder.OnBallHit += BallHitSomething;
+        playArea.OnBallExit += BallLost;
+    }
+
+    void OnDisable()
+    {
+        gameOverMenu.OnPlayAgain -= Reset;
+        gameOverMenu.OnQuit -= Shutdown;
+        topBorder.OnBallHit -= BallHitSomething;
+        playArea.OnBallExit -= BallLost;
     }
 
     // Update is called once per frame
@@ -92,9 +110,27 @@ public class GameControl : MonoBehaviour
         }
     }
 
+    public void BallHitSomething(Ball ball, Hittable hit)
+    {
+        PlayerBorder border = (PlayerBorder)hit;
+        if (border != null)
+        {
+            Rigidbody ballRB = ball.GetComponent<Rigidbody>();
+            ballRB.velocity += ballRB.velocity.normalized * border.speedGain;
+            player.initialBallSpeed += player.initialBallSpeed.normalized * border.speedGain;
+            Debug.Log("Speed gained by hitting " + name + ": " + speedGain);
+        }
+    }
+
     void UpdateDisplays()
     {
         pointsDisplay.text = points.ToString("D3");
         turnDisplay.text = turns.ToString();
+    }
+
+    public void BallLost(Ball ball, Hittable playArea)
+    {
+        EndTurn();
+        Destroy(ball);
     }
 }

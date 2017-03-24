@@ -1,21 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class GameOverMenu : MonoBehaviour
 {
-	public GameControl gameControl;
 	public GameObject winText;
 
-	public void PlayAgain()
+	public delegate void NoArgFunc();
+
+	public event NoArgFunc OnPlayAgain;
+	public event NoArgFunc OnQuit;
+
+	public void OnPlayAgainPressed()
 	{
-		gameControl.Reset();
+		OnPlayAgain();
 	}
 
-	public void Quit()
+	public void OnQuitPressed()
 	{
-		gameControl.Shutdown();
+		OnQuit();
 	}
 
 	public void DisplayWin(bool win)
