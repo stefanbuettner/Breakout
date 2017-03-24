@@ -13,6 +13,7 @@ public class GameControl : MonoBehaviour
 
     public int turns = 3;
     public int points = 0;
+    public float paddleFraction = 0.5f;
     private int numBrickHits = 0;
 
     [System.Serializable]
@@ -145,9 +146,7 @@ public class GameControl : MonoBehaviour
         if (border != null)
         {
             Rigidbody ballRB = ball.GetComponent<Rigidbody>();
-            ballRB.velocity += ballRB.velocity.normalized * border.speedGain;
-            player.shotSpeed += border.speedGain;
-            Debug.Log("Speed gained by hitting " + name + ": " + border.speedGain);
+            player.ScalePaddleWidth(paddleFraction);
         }
     }
 

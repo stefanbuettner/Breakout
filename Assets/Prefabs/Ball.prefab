@@ -20,10 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4642337629283866}
   - component: {fileID: 33786107600673404}
-  - component: {fileID: 135165862093890396}
   - component: {fileID: 23677188097091826}
   - component: {fileID: 114822355275176682}
   - component: {fileID: 54724278986196500}
+  - component: {fileID: 65104659829626742}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Ball
@@ -97,6 +97,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 1
+--- !u!65 &65104659829626742
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1098315159791498}
+  m_Material: {fileID: 13400000, guid: ab217e2edaf6879479ad7649a217b5a3, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000002, y: 1, z: 1.0000002}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114822355275176682
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -109,15 +121,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   horizontalSpeedGain: 1.5
---- !u!135 &135165862093890396
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1098315159791498}
-  m_Material: {fileID: 13400000, guid: ab217e2edaf6879479ad7649a217b5a3, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}

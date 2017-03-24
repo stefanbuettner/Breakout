@@ -43,6 +43,12 @@ public class PlayerControls : MonoBehaviour
         ballToShoot = newBall.GetComponent<Ball>();
     }
 
+    public void ScalePaddleWidth(float factor)
+    {
+        Vector3 currentScale = paddle.transform.localScale;
+        paddle.transform.localScale = new Vector3(currentScale.x * factor, currentScale.y, currentScale.z);
+    }
+
     // Update is called once per frame
     void Update()
     {
