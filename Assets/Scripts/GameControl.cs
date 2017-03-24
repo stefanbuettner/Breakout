@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [RequireComponent(typeof(TextMesh))]
 public class GameControl : MonoBehaviour
@@ -14,7 +15,14 @@ public class GameControl : MonoBehaviour
     public int points = 0;
     private int numBrickHits = 0;
 
-    public float speedGain = 4f;
+    [System.Serializable]
+    public class SpeedGainEntry
+    {
+        public int hits;
+        public float gain;
+    }
+
+    public List<SpeedGainEntry> speedGains = new List<SpeedGainEntry>();
 
     void Awake()
     {
@@ -116,15 +124,15 @@ public class GameControl : MonoBehaviour
             points += brick.GetHitpoints();
             ++numBrickHits;
 
-            switch (numBrickHits)
+            foreach (SpeedGainEntry speedGain in speedGains)
             {
-                case 4:
-                case 12:
+                if (speedGain.hits == numBrickHits)
+                {
                     Rigidbody ballRB = ball.GetComponent<Rigidbody>();
-                    ballRB.velocity += ballRB.velocity.normalized * speedGain;
-                    player.shotSpeed += speedGain;
+                    ballRB.velocity += ballRB.velocity.normalized * speedGain.gain;
+                    player.shotSpeed += speedGain.gain;
                     Debug.Log("Speed increase after " + numBrickHits + " hits");
-                    break;
+                }
             }
 
             if (brickManager.GetActiveBricks() <= 0)
@@ -139,7 +147,7 @@ public class GameControl : MonoBehaviour
             Rigidbody ballRB = ball.GetComponent<Rigidbody>();
             ballRB.velocity += ballRB.velocity.normalized * border.speedGain;
             player.shotSpeed += border.speedGain;
-            Debug.Log("Speed gained by hitting " + name + ": " + speedGain);
+            Debug.Log("Speed gained by hitting " + name + ": " + border.speedGain);
         }
     }
 
