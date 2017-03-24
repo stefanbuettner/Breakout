@@ -5,6 +5,14 @@ public class PlayArea : Hittable
 {
 	public event BallHitNotification OnBallExit;
 
+	void OnTriggerEnter(Collider col)
+	{
+		if (col.CompareTag("Ball"))
+		{
+			RaiseBallHit(col.GetComponent<Ball>(), this);
+		}
+	}
+
 	void OnTriggerExit(Collider col)
 	{
 		if (col.CompareTag("Ball"))

@@ -6,7 +6,7 @@ public class GameControl : MonoBehaviour
     public TextMesh turnDisplay;
     public TextMesh pointsDisplay;
     public PlayerControls player;
-    public BrickManager brickMgr;
+    public BrickManager brickManager;
     public GameOverMenu gameOverMenu;
     public PlayerBorder topBorder;
     public PlayArea playArea;
@@ -27,16 +27,18 @@ public class GameControl : MonoBehaviour
     {
         gameOverMenu.OnPlayAgain += Reset;
         gameOverMenu.OnQuit += Shutdown;
-        topBorder.OnBallHit += BallHitSomething;
+        topBorder.OnBallHit += BallHit;
         playArea.OnBallExit += BallLost;
+        brickManager.OnBrickHit += BallHit;
     }
 
     void OnDisable()
     {
         gameOverMenu.OnPlayAgain -= Reset;
         gameOverMenu.OnQuit -= Shutdown;
-        topBorder.OnBallHit -= BallHitSomething;
+        topBorder.OnBallHit -= BallHit;
         playArea.OnBallExit -= BallLost;
+        brickManager.OnBrickHit -= BallHit;
     }
 
     // Update is called once per frame
@@ -63,7 +65,7 @@ public class GameControl : MonoBehaviour
         gameOverMenu.gameObject.SetActive(false);
         player.enabled = true;
         player.Reset();
-        brickMgr.Reset();
+        brickManager.Reset();
     }
 
     public void EndTurn()
@@ -93,26 +95,33 @@ public class GameControl : MonoBehaviour
         }
     }
 
-    public void BrickHit(int brickHitPoints, Ball ball)
+    public void BallHit(Ball ball, Hittable hit)
     {
-        points += brickHitPoints;
-        ++numBrickHits;
-
-        switch (numBrickHits)
+        Brick brick = hit as Brick;
+        if (brick != null)
         {
-            case 4:
-            case 12:
-                Rigidbody ballRB = ball.GetComponent<Rigidbody>();
-                ballRB.velocity += ballRB.velocity.normalized * speedGain;
-                player.initialBallSpeed += player.initialBallSpeed.normalized * speedGain;
-                Debug.Log("Speed increase after " + numBrickHits + " hits");
-                break;
-        }
-    }
+            points += brick.GetHitpoints();
+            ++numBrickHits;
 
-    public void BallHitSomething(Ball ball, Hittable hit)
-    {
-        PlayerBorder border = (PlayerBorder)hit;
+            switch (numBrickHits)
+            {
+                case 4:
+                case 12:
+                    Rigidbody ballRB = ball.GetComponent<Rigidbody>();
+                    ballRB.velocity += ballRB.velocity.normalized * speedGain;
+                    player.initialBallSpeed += player.initialBallSpeed.normalized * speedGain;
+                    Debug.Log("Speed increase after " + numBrickHits + " hits");
+                    break;
+            }
+
+            if (brickManager.GetActiveBricks() <= 0)
+            {
+                // Add some delay until the game is won.
+                Invoke("GameWon", 0.1f);
+            }
+        }
+
+        PlayerBorder border = hit as PlayerBorder;
         if (border != null)
         {
             Rigidbody ballRB = ball.GetComponent<Rigidbody>();

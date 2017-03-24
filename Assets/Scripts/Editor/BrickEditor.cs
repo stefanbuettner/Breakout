@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(BrickType)), CanEditMultipleObjects]
+[CustomEditor(typeof(Brick)), CanEditMultipleObjects]
 public class BrickEditor : Editor
 {
 	Object[] brickPrefabs;

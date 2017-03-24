@@ -6,8 +6,6 @@ public class PlayerBorder : Hittable
     [Tooltip("Speed a ball gains when it first hit's the wall.")]
     public float speedGain = 4f;
 
-    public event BallHitNotification OnBallHit;
-
     private List<Ball> ballsWhichHitAlready = new List<Ball>();
 
     public void OnCollisionEnter(Collision other)
@@ -18,7 +16,7 @@ public class PlayerBorder : Hittable
             if (!ballsWhichHitAlready.Contains(ball))
             {
                 ballsWhichHitAlready.Add(ball);
-                OnBallHit(ball, this);
+                RaiseBallHit(ball, this);
             }
         }
     }

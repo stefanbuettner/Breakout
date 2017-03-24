@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
-public class StandardBrick : MonoBehaviour
+public class StandardBrick : Brick
 {
-	private BrickManager gameControl;
-	public int hitPoints = 1;
+	[SerializeField]
+	private int hitPoints = 1;
 
-	void Start()
+	public override int GetHitpoints()
 	{
-		gameControl = FindObjectOfType<BrickManager>();
+		return hitPoints;
 	}
 
 	void OnCollisionEnter(Collision col)
@@ -16,7 +16,7 @@ public class StandardBrick : MonoBehaviour
 		if (col.collider.CompareTag("Ball"))
 		{
 			gameObject.SetActive(false);
-			gameControl.BrickHit(hitPoints, col.gameObject.GetComponent<Ball>());
+			RaiseBallHit(col.gameObject.GetComponent<Ball>(), this);
 		}
 	}
 }

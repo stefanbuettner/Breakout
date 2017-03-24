@@ -4,8 +4,6 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class BrickManager : MonoBehaviour
 {
-	public GameControl gameControl;
-
 	[SerializeField, HideInInspector]
 	private List<GameObject> m_Bricks = new List<GameObject>();
 	[SerializeField, HideInInspector]
@@ -32,9 +30,37 @@ public class BrickManager : MonoBehaviour
 	[SerializeField, HideInInspector]
 	private float currYSpacing = 0.0f;
 
+	public event Hittable.BallHitNotification OnBrickHit;
+
 	void Start()
 	{
 		RecalculatePositions();
+	}
+
+	void OnEnable()
+	{
+		foreach (GameObject brick in m_Bricks)
+		{
+			if (brick != null)
+			{
+				Brick brickComp = brick.GetComponent<Brick>();
+				brickComp.OnBallHit += BrickHit;
+				brickComp.OnDestroyEvent += OnBrickDestroyed;
+			}
+		}
+	}
+
+	void OnDisable()
+	{
+		foreach (GameObject brick in m_Bricks)
+		{
+			if (brick != null)
+			{
+				Brick brickComp = brick.GetComponent<Brick>();
+				brickComp.OnBallHit -= BrickHit;
+				brickComp.OnDestroyEvent -= OnBrickDestroyed;
+			}
+		}
 	}
 
 	void Update()
@@ -186,11 +212,11 @@ public class BrickManager : MonoBehaviour
 		GameObject brickPrefab = Resources.Load("Bricks/" + prefabType) as GameObject;
 		GameObject newBrick = UnityEditor.PrefabUtility.InstantiatePrefab(brickPrefab) as GameObject;
 		newBrick.transform.parent = transform;
-		BrickType brickComponent = newBrick.GetComponent<BrickType>();
+		Brick brickComponent = newBrick.GetComponent<Brick>();
 		if (brickComponent == null)
-			brickComponent = newBrick.AddComponent<BrickType>();
-		brickComponent.brickManager = this;
-		brickComponent.prefabType = newBrick.name;
+			brickComponent = newBrick.AddComponent<Brick>();
+		brickComponent.OnDestroyEvent += OnBrickDestroyed;
+		brickComponent.SetPrefabType(newBrick.name);
 
 		return newBrick;
 	}
@@ -218,11 +244,14 @@ public class BrickManager : MonoBehaviour
 	}
 
 
-	public void BrickHit(int hitPoints, Ball ball)
+	public void BrickHit(Ball ball, Hittable hit)
 	{
 		--activeBricks;
-		gameControl.BrickHit(hitPoints, ball);
-		if (activeBricks <= 0)
-			gameControl.Invoke("GameWon", 0.5f);
+		OnBrickHit(ball, hit);
+	}
+
+	public int GetActiveBricks()
+	{
+		return activeBricks;
 	}
 }
