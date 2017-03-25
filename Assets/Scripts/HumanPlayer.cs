@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(ConfigurableJoint))]
-public class PlayerControls : MonoBehaviour
+public class HumanPlayer : MonoBehaviour
 {
-    public Paddle paddle;
+    private Paddle paddle;
 
     void Awake()
     {
@@ -11,12 +11,11 @@ public class PlayerControls : MonoBehaviour
         if (paddle == null)
             paddle = FindObjectOfType<Paddle>();
         GetComponent<ConfigurableJoint>().connectedBody = paddle.GetComponent<Rigidbody>();
-        Reset();
     }
 
-    public void Reset()
+    public void LevelReset()
     {
-        paddle.Reset();
+        paddle.LevelReset();
     }
 
     public void TurnReset()

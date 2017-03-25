@@ -52,7 +52,7 @@ public class BrickManager : MonoBehaviour
 		}
 	}
 
-	public void Reset()
+	public void LevelReset()
 	{
 		activeBricks = 0;
 		Brick[] bricks = GetComponentsInChildren<Brick>(true);

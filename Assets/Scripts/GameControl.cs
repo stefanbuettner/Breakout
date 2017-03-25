@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameControl : MonoBehaviour
 {
     private StatsDisplay statsDisplay;
-    private PlayerControls player;
+    private Player player;
     private Paddle paddle;
     private BrickManager brickManager;
     private GameOverMenu gameOverMenu;
@@ -29,7 +29,7 @@ public class GameControl : MonoBehaviour
     void Awake()
     {
         statsDisplay = FindObjectOfType<StatsDisplay>();
-        player = FindObjectOfType<PlayerControls>();
+        player = FindObjectOfType<Player>();
         paddle = FindObjectOfType<Paddle>();
         brickManager = FindObjectOfType<BrickManager>();
         gameOverMenu = FindObjectOfType<GameOverMenu>();
@@ -40,12 +40,12 @@ public class GameControl : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Reset();
+        LevelReset();
     }
 
     void OnEnable()
     {
-        gameOverMenu.OnPlayAgain += Reset;
+        gameOverMenu.OnPlayAgain += LevelReset;
         gameOverMenu.OnQuit += Shutdown;
         topBorder.OnBallHit += BallHit;
         playArea.OnBallExit += BallLost;
@@ -54,7 +54,7 @@ public class GameControl : MonoBehaviour
 
     void OnDisable()
     {
-        gameOverMenu.OnPlayAgain -= Reset;
+        gameOverMenu.OnPlayAgain -= LevelReset;
         gameOverMenu.OnQuit -= Shutdown;
         topBorder.OnBallHit -= BallHit;
         playArea.OnBallExit -= BallLost;
@@ -82,7 +82,7 @@ public class GameControl : MonoBehaviour
         Application.Quit();
     }
 
-    public void Reset()
+    public void LevelReset()
     {
         turns = 3;
         points = 0;
@@ -90,8 +90,8 @@ public class GameControl : MonoBehaviour
         UpdateDisplays();
         gameOverMenu.gameObject.SetActive(false);
         player.enabled = true;
-        player.Reset();
-        brickManager.Reset();
+        player.LevelReset();
+        brickManager.LevelReset();
     }
 
     public void EndTurn()

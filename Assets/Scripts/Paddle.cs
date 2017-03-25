@@ -18,7 +18,7 @@ public class Paddle : MonoBehaviour
 		initialWidth = transform.localScale.x;
 	}
 
-	public void Reset()
+	public void LevelReset()
 	{
 		shotSpeed = defaultShotSpeed;
 		Vector3 newScale = transform.localScale;
@@ -48,12 +48,15 @@ public class Paddle : MonoBehaviour
         transform.localScale = new Vector3(currentScale.x * factor, currentScale.y, currentScale.z);
     }
 
-	public void ShootBall()
+	public Ball ShootBall()
 	{
+		Ball shotBall = null;
 		if (ballToShoot != null)
 		{
+			shotBall = ballToShoot;
 			ballToShoot.Shoot(Vector3.up * shotSpeed);
 			ballToShoot = null;
 		}
+		return shotBall;
 	}
 }

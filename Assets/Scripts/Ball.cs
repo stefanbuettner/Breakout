@@ -30,4 +30,13 @@ public class Ball : MonoBehaviour
             rb.velocity = rb.velocity.normalized * speed;
         }
     }
+
+    public delegate void BallDestroyedFunction(Ball ball);
+    public event BallDestroyedFunction OnDestroyEvent;
+    void OnDestroy()
+    {
+        BallDestroyedFunction handler = OnDestroyEvent;
+        if (handler != null)
+            handler(this);
+    }
 }
