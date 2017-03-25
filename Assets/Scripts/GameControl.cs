@@ -134,7 +134,7 @@ public class GameControl : MonoBehaviour
                     Rigidbody ballRB = ball.GetComponent<Rigidbody>();
                     ballRB.velocity += ballRB.velocity.normalized * speedGain.gain;
                     paddle.shotSpeed += speedGain.gain;
-                    Debug.Log("Speed increase after " + numBrickHits + " hits");
+                    Debug.Log("Speed increase by " + speedGain.gain + " after " + numBrickHits + " hits");
                 }
             }
 

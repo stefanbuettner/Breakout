@@ -50,13 +50,26 @@ public class Paddle : MonoBehaviour
 
 	public Ball ShootBall()
 	{
+		return ShootBall(Vector3.up);
+	}
+
+	public Ball ShootBall(Vector3 dir)
+	{
 		Ball shotBall = null;
 		if (ballToShoot != null)
 		{
 			shotBall = ballToShoot;
-			ballToShoot.Shoot(Vector3.up * shotSpeed);
+			ballToShoot.Shoot(dir.normalized * shotSpeed);
 			ballToShoot = null;
 		}
 		return shotBall;
+	}
+
+	public delegate void HitBy(GameObject go);
+    public event HitBy OnHit;
+
+	void OnCollisionEnter(Collision col)
+	{
+		OnHit(col.gameObject);
 	}
 }
