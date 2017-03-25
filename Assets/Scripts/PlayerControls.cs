@@ -3,50 +3,25 @@
 [RequireComponent(typeof(ConfigurableJoint))]
 public class PlayerControls : MonoBehaviour
 {
-    public GameObject ballPrefab;
-    private GameObject paddle;
-
-    public Vector3 initialBallPosition = new Vector3(0f, 1.5f, 0f);
-    [SerializeField]
-    private float defaultShotSpeed = 8f;
-    [HideInInspector]
-    public float shotSpeed;
-    private Ball ballToShoot;
-
-    public float paddleSpeed = 2f;
+    public Paddle paddle;
 
     void Awake()
     {
-        paddle = GameObject.FindGameObjectWithTag("Paddle");
+        /* In case it was not set in the editor. */
+        if (paddle == null)
+            paddle = FindObjectOfType<Paddle>();
         GetComponent<ConfigurableJoint>().connectedBody = paddle.GetComponent<Rigidbody>();
         Reset();
     }
 
     public void Reset()
     {
-        SpawnNewBall();
-        shotSpeed = defaultShotSpeed;
+        paddle.Reset();
     }
 
     public void TurnReset()
     {
-        SpawnNewBall();
-    }
-
-    public void SpawnNewBall()
-    {
-        if (ballToShoot != null)
-            Destroy(ballToShoot.gameObject);
-
-        GameObject newBall = GameObject.Instantiate(ballPrefab, paddle.transform) as GameObject;
-        newBall.transform.localPosition = initialBallPosition;
-        ballToShoot = newBall.GetComponent<Ball>();
-    }
-
-    public void ScalePaddleWidth(float factor)
-    {
-        Vector3 currentScale = paddle.transform.localScale;
-        paddle.transform.localScale = new Vector3(currentScale.x * factor, currentScale.y, currentScale.z);
+        paddle.TurnReset();
     }
 
     // Update is called once per frame
@@ -69,11 +44,8 @@ public class PlayerControls : MonoBehaviour
         //if (CrossPlatformInputManager.GetButtonUp("Fire1"))
         if (Input.GetButtonUp("Fire1"))
         {
-            if (ballToShoot != null)
-            {
-                ballToShoot.Shoot(Vector3.up * shotSpeed);
-                ballToShoot = null;
-            }
+            paddle.ShootBall();
+            
         }
     }
 }

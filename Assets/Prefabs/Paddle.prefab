@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 65191418081802810}
   - component: {fileID: 23852908169286386}
   - component: {fileID: 54883947626789712}
+  - component: {fileID: 114919044459118242}
   m_Layer: 0
   m_Name: Paddle
   m_TagString: Paddle
@@ -108,3 +109,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114919044459118242
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1148221489854890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7125febe9de0f604f8411ef8a3d74439, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballPrefab: {fileID: 1098315159791498, guid: 97530f3a2b4e1064b950d708c719c5a9, type: 2}
+  initialBallPosition: {x: 0, y: 1.5, z: 0}
+  defaultShotSpeed: 8
+  shotSpeed: 0
+  paddleSpeed: 2

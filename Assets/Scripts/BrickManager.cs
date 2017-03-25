@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [ExecuteInEditMode]
 public class BrickManager : MonoBehaviour
 {
-	[SerializeField, HideInInspector]
-	private List<GameObject> m_Bricks = new List<GameObject>();
 	[SerializeField, HideInInspector]
 	private int activeBricks = 0;
 
@@ -39,40 +36,30 @@ public class BrickManager : MonoBehaviour
 
 	void OnEnable()
 	{
-		foreach (GameObject brick in m_Bricks)
+		Brick[] bricks = GetComponentsInChildren<Brick>();
+		foreach (Brick brick in bricks)
 		{
-			if (brick != null)
-			{
-				Brick brickComp = brick.GetComponent<Brick>();
-				brickComp.OnBallHit += BrickHit;
-				brickComp.OnDestroyEvent += OnBrickDestroyed;
-			}
+			brick.OnBallHit += BrickHit;
 		}
 	}
 
 	void OnDisable()
 	{
-		foreach (GameObject brick in m_Bricks)
+		Brick[] bricks = GetComponentsInChildren<Brick>();
+		foreach (Brick brick in bricks)
 		{
-			if (brick != null)
-			{
-				Brick brickComp = brick.GetComponent<Brick>();
-				brickComp.OnBallHit -= BrickHit;
-				brickComp.OnDestroyEvent -= OnBrickDestroyed;
-			}
+			brick.OnBallHit -= BrickHit;
 		}
 	}
 
 	public void Reset()
 	{
 		activeBricks = 0;
-		foreach (GameObject brick in m_Bricks)
+		Brick[] bricks = GetComponentsInChildren<Brick>(true);
+		foreach (Brick brick in bricks)
 		{
-			if (brick != null)
-			{
-				brick.SetActive(true);
-				++activeBricks;
-			}
+			brick.gameObject.SetActive(true);
+			++activeBricks;
 		}
 	}
 
@@ -92,23 +79,21 @@ public class BrickManager : MonoBehaviour
 			{
 				for (int x = currXCount; x < xCount; ++x)
 				{
-					GameObject newBrick = CreateNewBrick(defaultBrickPrefabName);
-					// Important to use the new xCount!
-					m_Bricks.Insert(y * xCount + currXCount, newBrick);
+					CreateNewBrick(defaultBrickPrefabName);
 				}
 			}
 		}
 		else if (xCount < currXCount)
 		{
+			Brick[] bricks = GetComponentsInChildren<Brick>();
 			for (int y = 0; y < currYCount; ++y)
 			{
 				for (int x = 0; x < currXCount - xCount; ++x)
 				{
-					GameObject brick = m_Bricks[x + (y + 1) * xCount];
+					Brick brick = bricks[x + (y + 1) * xCount];
 					if (brick != null)
-						GameObject.DestroyImmediate(brick);
+						GameObject.DestroyImmediate(brick.gameObject);
 				}
-				m_Bricks.RemoveRange((y + 1) * xCount, currXCount - xCount);
 			}
 		}
 		else
@@ -129,23 +114,22 @@ public class BrickManager : MonoBehaviour
 			{
 				for (int x = 0; x < currXCount; ++x)
 				{
-					GameObject newBrick = CreateNewBrick(defaultBrickPrefabName);
-					m_Bricks.Add(newBrick);
+					CreateNewBrick(defaultBrickPrefabName);
 				}
 			}
 		}
 		else if (yCount < currYCount)
 		{
+			Brick[] bricks = GetComponentsInChildren<Brick>();
 			for (int y = yCount; y < currYCount; ++y)
 			{
 				for (int x = 0; x < currXCount; ++x)
 				{
-					GameObject brick = m_Bricks[x + y * currXCount];
+					Brick brick = bricks[x + y * currXCount];
 					if (brick != null)
-						GameObject.DestroyImmediate(brick);
+						GameObject.DestroyImmediate(brick.gameObject);
 				}
 			}
-			m_Bricks.RemoveRange(yCount * currXCount, (currYCount - yCount) * currXCount);
 		}
 		else
 		{
@@ -178,11 +162,12 @@ public class BrickManager : MonoBehaviour
 			return;
 #endif // UNITY_EDITOR
 
+		Brick[] bricks = GetComponentsInChildren<Brick>();
 		for (int y = 0; y < currYCount; ++y)
 		{
 			for (int x = 0; x < currXCount; ++x)
 			{
-				GameObject brick = m_Bricks[x + y *currXCount];
+				Brick brick = bricks [x + y *currXCount];
 				if (brick != null)
 					brick.transform.localPosition = GetBrickPosition(x, y, currXCount, currYCount);
 			}
@@ -197,16 +182,6 @@ public class BrickManager : MonoBehaviour
 		return new Vector3(xPos, yPos, 0);
 	}
 
-	void OnDestroy()
-	{
-		foreach (GameObject brick in m_Bricks)
-		{
-			if (brick != null)
-				GameObject.DestroyImmediate(brick);
-		}
-		m_Bricks.Clear();
-	}
-
 #if UNITY_EDITOR
 	GameObject CreateNewBrick(string prefabType)
 	{
@@ -216,7 +191,6 @@ public class BrickManager : MonoBehaviour
 		Brick brickComponent = newBrick.GetComponent<Brick>();
 		if (brickComponent == null)
 			brickComponent = newBrick.AddComponent<Brick>();
-		brickComponent.OnDestroyEvent += OnBrickDestroyed;
 		brickComponent.SetPrefabType(newBrick.name);
 
 		return newBrick;
@@ -226,24 +200,14 @@ public class BrickManager : MonoBehaviour
 	{
 		foreach (GameObject go in UnityEditor.Selection.gameObjects)
 		{
-			int idx = m_Bricks.IndexOf(go);
 			GameObject newBrick = CreateNewBrick(brickType);
 			newBrick.transform.position = go.transform.position;
 			newBrick.transform.rotation = go.transform.rotation;
 			newBrick.transform.localScale = go.transform.localScale;
 			GameObject.DestroyImmediate(go);
-			m_Bricks[idx] = newBrick;
 		}
 	}
 #endif
-
-	public void OnBrickDestroyed(GameObject brick)
-	{
-		int i = m_Bricks.IndexOf(brick);
-		if ((0 < i) && (i < m_Bricks.Count))
-			m_Bricks[i] = null;
-	}
-
 
 	public void BrickHit(Ball ball, Hittable hit)
 	{

@@ -6,6 +6,7 @@ public class GameControl : MonoBehaviour
 {
     private StatsDisplay statsDisplay;
     private PlayerControls player;
+    private Paddle paddle;
     private BrickManager brickManager;
     private GameOverMenu gameOverMenu;
     private PlayerBorder topBorder;
@@ -29,6 +30,7 @@ public class GameControl : MonoBehaviour
     {
         statsDisplay = FindObjectOfType<StatsDisplay>();
         player = FindObjectOfType<PlayerControls>();
+        paddle = FindObjectOfType<Paddle>();
         brickManager = FindObjectOfType<BrickManager>();
         gameOverMenu = FindObjectOfType<GameOverMenu>();
         topBorder = FindObjectOfType<PlayerBorder>();
@@ -131,7 +133,7 @@ public class GameControl : MonoBehaviour
                 {
                     Rigidbody ballRB = ball.GetComponent<Rigidbody>();
                     ballRB.velocity += ballRB.velocity.normalized * speedGain.gain;
-                    player.shotSpeed += speedGain.gain;
+                    paddle.shotSpeed += speedGain.gain;
                     Debug.Log("Speed increase after " + numBrickHits + " hits");
                 }
             }
@@ -146,7 +148,7 @@ public class GameControl : MonoBehaviour
         if (border != null)
         {
             Rigidbody ballRB = ball.GetComponent<Rigidbody>();
-            player.ScalePaddleWidth(paddleFraction);
+            paddle.ScalePaddleWidth(paddleFraction);
         }
     }
 
