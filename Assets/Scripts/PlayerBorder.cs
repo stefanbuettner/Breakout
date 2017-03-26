@@ -4,9 +4,9 @@ public class PlayerBorder : Hittable
 {
     private bool wasHit = false;
 
-    public void OnCollisionEnter(Collision other)
+    public void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Ball"))
+        if (other.CompareTag("Ball"))
         {
             if (!wasHit)
             {

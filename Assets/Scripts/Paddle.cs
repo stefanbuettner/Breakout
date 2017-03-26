@@ -78,8 +78,12 @@ public class Paddle : MonoBehaviour
 	public delegate void HitBy(GameObject go);
     public event HitBy OnHit;
 
-	void OnCollisionEnter(Collision col)
+	void OnTriggerEnter(Collider col)
 	{
-		OnHit(col.gameObject);
+		HitBy handler = OnHit;
+		if (handler != null)
+		{
+			handler(col.gameObject);
+		}
 	}
 }

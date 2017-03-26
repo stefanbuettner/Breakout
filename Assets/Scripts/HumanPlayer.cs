@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(ConfigurableJoint))]
-public class HumanPlayer : MonoBehaviour
+public class HumanPlayer : Player
 {
     private Paddle paddle;
 
@@ -13,12 +13,12 @@ public class HumanPlayer : MonoBehaviour
         GetComponent<ConfigurableJoint>().connectedBody = paddle.GetComponent<Rigidbody>();
     }
 
-    public void LevelReset()
+    public override void LevelReset()
     {
         paddle.LevelReset();
     }
 
-    public void TurnReset()
+    public override void TurnReset()
     {
         paddle.TurnReset();
     }
@@ -44,7 +44,6 @@ public class HumanPlayer : MonoBehaviour
         if (Input.GetButtonUp("Fire1"))
         {
             paddle.ShootBall();
-            
         }
     }
 }
