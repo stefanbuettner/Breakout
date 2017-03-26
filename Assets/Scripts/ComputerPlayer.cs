@@ -5,7 +5,8 @@ public class ComputerPlayer : Player
 {
     private Paddle paddle;
     private Ball ball;
-    public float maxPaddleOffset;
+    [Range(0f, 1f)]
+    public float maxPaddleOffset = 0.8f;
     private float paddleOffset;
 
     void Awake()
@@ -14,7 +15,7 @@ public class ComputerPlayer : Player
         if (paddle == null)
             paddle = FindObjectOfType<Paddle>();
         GetComponent<ConfigurableJoint>().connectedBody = paddle.GetComponent<Rigidbody>();
-        paddleOffset = Random.Range(-maxPaddleOffset, maxPaddleOffset);
+        paddleOffset = GetRandomPaddleOffset();
     }
 
     void OnEnable()
@@ -65,8 +66,13 @@ public class ComputerPlayer : Player
     {
         if (go.GetComponent<Ball>() != null)
         {
-            paddleOffset = Random.Range(-maxPaddleOffset, maxPaddleOffset);
+            paddleOffset = GetRandomPaddleOffset();
             Debug.Log("New paddle offset " + paddleOffset);
         }
+    }
+
+    float GetRandomPaddleOffset()
+    {
+        return Random.Range(-maxPaddleOffset, maxPaddleOffset) * paddle.transform.localScale.x / 2f;
     }
 }

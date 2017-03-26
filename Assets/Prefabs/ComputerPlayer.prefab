@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9577f6690ce17ee46a088f1c8828c255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPaddleOffset: 3
+  maxPaddleOffset: 0.8
 --- !u!153 &153580403712027860
 ConfigurableJoint:
   m_ObjectHideFlags: 1
