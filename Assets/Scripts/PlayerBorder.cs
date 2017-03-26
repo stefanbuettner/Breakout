@@ -1,33 +1,17 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerBorder : MonoBehaviour
+public class PlayerBorder : Hittable
 {
-    private PlayerControls player;
+    private bool wasHit = false;
 
-    [Tooltip("Speed a ball gains when it first hit's the wall.")]
-    public float speedGain = 4f;
-
-    private List<Ball> ballsWhichHitAlready = new List<Ball>();
-
-    // Use this for initialization
-    void Start()
+    public void OnTriggerEnter(Collider other)
     {
-        player = FindObjectOfType<PlayerControls>();
-    }
-
-    void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("Ball"))
+        if (other.CompareTag("Ball"))
         {
-            Ball ball = other.gameObject.GetComponent<Ball>();
-            if (!ballsWhichHitAlready.Contains(ball))
+            if (!wasHit)
             {
-                ballsWhichHitAlready.Add(ball);
-                Rigidbody ballRB = ball.GetComponent<Rigidbody>();
-                ballRB.velocity += ballRB.velocity.normalized * speedGain;
-                player.initialBallSpeed += player.initialBallSpeed.normalized * speedGain;
-                Debug.Log("Speed gained by hitting " + name + ": " + speedGain);
+                wasHit = true;
+                RaiseBallHit(other.gameObject.GetComponent<Ball>(), this);
             }
         }
     }

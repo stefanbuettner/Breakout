@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23895111306456276}
   - component: {fileID: 114044085706817764}
   m_Layer: 0
-  m_Name: StandardBrick
+  m_Name: VintageStandardBrick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,7 +38,7 @@ Transform:
   m_GameObject: {fileID: 1120020298464984}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -56,7 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 5d8396b7b82072746be4ec6249ac9b45, type: 2}
+  - {fileID: 2100000, guid: c0310df0d8fbf0f48a4b1cba0ab233b5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -80,7 +80,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1120020298464984}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: ed08f150a09471e439baae14016351b9, type: 3}
 --- !u!65 &65884815794382070
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -91,7 +91,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 4, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114044085706817764
 MonoBehaviour:
@@ -104,3 +104,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15d5e8ae935022e4eabc88883b26eff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefabType: 
+  hitPoints: 1
