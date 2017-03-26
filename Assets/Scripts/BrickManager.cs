@@ -11,9 +11,9 @@ public class BrickManager : MonoBehaviour
 #endif
 
 	[Range(0, 25)]
-	public int xCount = 17;
+	public int xCount = 0;
 	[Range(0, 20)]
-	public int yCount = 8;
+	public int yCount = 0;
 
 	[SerializeField, HideInInspector]
 	private int currXCount = 0;
@@ -28,11 +28,6 @@ public class BrickManager : MonoBehaviour
 	private float currYSpacing = 0.0f;
 
 	public event Hittable.BallHitNotification OnBrickHit;
-
-	void Start()
-	{
-		RecalculatePositions();
-	}
 
 	void OnEnable()
 	{
@@ -148,11 +143,8 @@ public class BrickManager : MonoBehaviour
 		currYSpacing = ySpacing;
 		return updateRequired;
 	}
-#endif // UNITY_EDITOR
-
 	private void RecalculatePositions()
 	{
-#if UNITY_EDITOR
 		bool needsRecalculation = false;
 		needsRecalculation |= UpdateX();
 		needsRecalculation |= UpdateY();
@@ -160,7 +152,6 @@ public class BrickManager : MonoBehaviour
 
 		if (!needsRecalculation)
 			return;
-#endif // UNITY_EDITOR
 
 		Brick[] bricks = GetComponentsInChildren<Brick>();
 		for (int y = 0; y < currYCount; ++y)
@@ -182,7 +173,6 @@ public class BrickManager : MonoBehaviour
 		return new Vector3(xPos, yPos, 0);
 	}
 
-#if UNITY_EDITOR
 	GameObject CreateNewBrick(string prefabType)
 	{
 		GameObject brickPrefab = Resources.Load("Bricks/" + prefabType) as GameObject;
@@ -207,7 +197,8 @@ public class BrickManager : MonoBehaviour
 			GameObject.DestroyImmediate(go);
 		}
 	}
-#endif
+
+#endif // UNITY_EDITOR
 
 	public void BrickHit(Ball ball, Hittable hit)
 	{
