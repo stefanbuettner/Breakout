@@ -131,7 +131,7 @@ public class GameControl : MonoBehaviour
             {
                 if (speedGain.hits == numBrickHits)
                 {
-                    Rigidbody ballRB = ball.GetComponent<Rigidbody>();
+                    MyRigidbody ballRB = ball.GetComponent<MyRigidbody>();
                     ballRB.velocity += ballRB.velocity.normalized * speedGain.gain;
                     paddle.shotSpeed += speedGain.gain;
                     Debug.Log("Speed increase by " + speedGain.gain + " after " + numBrickHits + " hits");
@@ -147,7 +147,6 @@ public class GameControl : MonoBehaviour
         PlayerBorder border = hit as PlayerBorder;
         if (border != null)
         {
-            Rigidbody ballRB = ball.GetComponent<Rigidbody>();
             paddle.ScalePaddleWidth(paddleFraction);
         }
     }

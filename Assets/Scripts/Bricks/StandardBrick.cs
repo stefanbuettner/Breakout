@@ -11,9 +11,9 @@ public class StandardBrick : Brick
 		return hitPoints;
 	}
 
-	void OnCollisionEnter(Collision col)
+	void OnTriggerEnter(Collider col)
 	{
-		if (col.collider.CompareTag("Ball"))
+		if (col.CompareTag("Ball"))
 		{
 			gameObject.SetActive(false);
 			RaiseBallHit(col.gameObject.GetComponent<Ball>(), this);

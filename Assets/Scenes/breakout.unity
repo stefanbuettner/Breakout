@@ -3520,11 +3520,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114254401458287732, guid: dd17250694857ed4fa0c9731322d940c,
-        type: 2}
-      propertyPath: maxPaddleOffset
-      value: 0.8
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dd17250694857ed4fa0c9731322d940c, type: 2}
   m_IsPrefabParent: 0

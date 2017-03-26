@@ -9,6 +9,7 @@ public class PlayArea : Hittable
 	{
 		if (col.CompareTag("Ball"))
 		{
+			Debug.Log("PlayArea Ball entered");
 			RaiseBallHit(col.GetComponent<Ball>(), this);
 		}
 	}
@@ -17,6 +18,7 @@ public class PlayArea : Hittable
 	{
 		if (col.CompareTag("Ball"))
 		{
+			Debug.Log("PlayArea ball exited");
 			OnBallExit(col.GetComponent<Ball>(), this);
 		}
 	}

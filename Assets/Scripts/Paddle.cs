@@ -18,6 +18,16 @@ public class Paddle : MonoBehaviour
 		initialWidth = transform.localScale.x;
 	}
 
+	void Update()
+	{
+		if (ballToShoot != null)
+		{
+			Vector3 newPos = ballToShoot.transform.position;
+			newPos.x = transform.position.x;
+			ballToShoot.transform.position = newPos;
+		}
+	}
+
 	public void LevelReset()
 	{
 		shotSpeed = defaultShotSpeed;
@@ -37,8 +47,8 @@ public class Paddle : MonoBehaviour
         if (ballToShoot != null)
             Destroy(ballToShoot.gameObject);
 
-        GameObject newBall = GameObject.Instantiate(ballPrefab, transform) as GameObject;
-        newBall.transform.localPosition = initialBallPosition;
+        GameObject newBall = GameObject.Instantiate(ballPrefab) as GameObject;
+        newBall.transform.position = transform.position + initialBallPosition;
         ballToShoot = newBall.GetComponent<Ball>();
     }
 

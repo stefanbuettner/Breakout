@@ -2,21 +2,18 @@
 
 public class Ball : MonoBehaviour
 {
-    private Rigidbody rb;
+    private MyRigidbody rb;
     public float horizontalSpeedGain = 1.5f;
 
     // Use this for initialization
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.isKinematic = true;
+        rb = GetComponent<MyRigidbody>();
     }
 
     public void Shoot(Vector3 initialSpeed)
     {
-        rb.isKinematic = false;
         rb.velocity = initialSpeed;
-        transform.parent = null;
     }
 
     void OnCollisionEnter(Collision collision)

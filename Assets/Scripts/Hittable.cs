@@ -11,6 +11,9 @@ public abstract class Hittable : MonoBehaviour
 	{
 		BallHitNotification handler = OnBallHit;
 		if (handler != null)
+		{
+			Debug.Log("Ball hit " + name);
 			handler(ball, hitObject);
+		}
 	}
 }
