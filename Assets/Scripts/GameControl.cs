@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(TextMesh))]
 public class GameControl : MonoBehaviour
@@ -28,8 +29,26 @@ public class GameControl : MonoBehaviour
 
     void Awake()
     {
+        Player[] players = FindObjectsOfType<Player>();
+        System.Type requestedPlayerType = typeof(HumanPlayer);
+        Settings s = Settings.instance;
+        if (s)
+        {
+            if (s.playerType == Settings.PlayerType.COMPUTER)
+                requestedPlayerType = typeof(ComputerPlayer);
+        }
+
+        foreach (Player p in players)
+        {
+            p.gameObject.SetActive(false);
+            if (p.GetType() == requestedPlayerType)
+            {
+                player = p;
+                player.gameObject.SetActive(true);
+            }
+        }
+
         statsDisplay = FindObjectOfType<StatsDisplay>();
-        player = FindObjectOfType<Player>();
         paddle = FindObjectOfType<Paddle>();
         brickManager = FindObjectOfType<BrickManager>();
         gameOverMenu = FindObjectOfType<GameOverMenu>();
@@ -46,7 +65,7 @@ public class GameControl : MonoBehaviour
     void OnEnable()
     {
         gameOverMenu.OnPlayAgain += LevelReset;
-        gameOverMenu.OnQuit += Shutdown;
+        gameOverMenu.OnQuit += ToMainMenu;
         topBorder.OnBallHit += BallHit;
         playArea.OnBallExit += BallLost;
         brickManager.OnBrickHit += BallHit;
@@ -55,7 +74,7 @@ public class GameControl : MonoBehaviour
     void OnDisable()
     {
         gameOverMenu.OnPlayAgain -= LevelReset;
-        gameOverMenu.OnQuit -= Shutdown;
+        gameOverMenu.OnQuit -= ToMainMenu;
         topBorder.OnBallHit -= BallHit;
         playArea.OnBallExit -= BallLost;
         brickManager.OnBrickHit -= BallHit;
@@ -67,7 +86,7 @@ public class GameControl : MonoBehaviour
         UpdateDisplays();
         if (Input.GetKeyUp(KeyCode.Escape))
         {
-            Shutdown();
+            ToMainMenu();
         }
     }
 
@@ -77,9 +96,9 @@ public class GameControl : MonoBehaviour
         statsDisplay.SetTurns(turns);
     }
 
-    public void Shutdown()
+    public void ToMainMenu()
     {
-        Application.Quit();
+        SceneManager.LoadScene("menu");
     }
 
     public void LevelReset()
