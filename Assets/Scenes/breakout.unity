@@ -3666,7 +3666,7 @@ Prefab:
     - target: {fileID: 114386308408884810, guid: 1eb53aa32fb825d4c9487ba6224a86cb,
         type: 2}
       propertyPath: speedGains.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4015882493995856, guid: 1eb53aa32fb825d4c9487ba6224a86cb, type: 2}
       propertyPath: m_LocalPosition.x
@@ -3713,7 +3713,7 @@ Prefab:
     - target: {fileID: 114386308408884810, guid: 1eb53aa32fb825d4c9487ba6224a86cb,
         type: 2}
       propertyPath: speedGains.Array.data[0].gain
-      value: 12
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 114386308408884810, guid: 1eb53aa32fb825d4c9487ba6224a86cb,
         type: 2}
@@ -3723,11 +3723,21 @@ Prefab:
     - target: {fileID: 114386308408884810, guid: 1eb53aa32fb825d4c9487ba6224a86cb,
         type: 2}
       propertyPath: speedGains.Array.data[2].hits
-      value: 20
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 114386308408884810, guid: 1eb53aa32fb825d4c9487ba6224a86cb,
         type: 2}
       propertyPath: speedGains.Array.data[2].gain
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114386308408884810, guid: 1eb53aa32fb825d4c9487ba6224a86cb,
+        type: 2}
+      propertyPath: speedGains.Array.data[3].hits
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 114386308408884810, guid: 1eb53aa32fb825d4c9487ba6224a86cb,
+        type: 2}
+      propertyPath: speedGains.Array.data[3].gain
       value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []

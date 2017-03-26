@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23895111306456276}
   - component: {fileID: 114044085706817764}
   m_Layer: 0
-  m_Name: StandardBrick
+  m_Name: VintageStandardBrick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,7 +80,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1120020298464984}
-  m_Mesh: {fileID: 4300000, guid: 1a64d690c596c604587ceaabbba28e57, type: 3}
+  m_Mesh: {fileID: 4300000, guid: ed08f150a09471e439baae14016351b9, type: 3}
 --- !u!65 &65884815794382070
 BoxCollider:
   m_ObjectHideFlags: 1

@@ -43,7 +43,7 @@ public class HumanPlayer : Player
         //if (CrossPlatformInputManager.GetButtonUp("Fire1"))
         if (Input.GetButtonUp("Fire1"))
         {
-            paddle.ShootBall();
+            paddle.ShootBall(new Vector3(Random.Range(-1f, 1f), 1.0f, 0.0f));
         }
     }
 }

@@ -44,25 +44,29 @@ public class MyRigidbody : MonoBehaviour
             (leftPenetration < topPenetration) &&
             (leftPenetration < bottomPenetration))
         {
-            newVelocity.x = -newVelocity.x;
+            // Multiple collisions can happen in one frame.
+            // So if 2 bricks are hit from the bottom only swapping
+            // the movement direction would cancle out. That's why
+            // I set the desired direction manually.
+            newVelocity.x = -Mathf.Abs(newVelocity.x);
         }
         else if ((rightPenetration < leftPenetration) &&
                  (rightPenetration < topPenetration) && 
                  (rightPenetration < bottomPenetration))
         {
-            newVelocity.x = -newVelocity.x;
+            newVelocity.x = Mathf.Abs(newVelocity.x);
         }
         else if ((topPenetration < leftPenetration) &&
                  (topPenetration < rightPenetration) &&
                  (topPenetration < bottomPenetration))
         {
-            newVelocity.y = -newVelocity.y;
+            newVelocity.y = Mathf.Abs(newVelocity.y);
         }
         else if ((bottomPenetration < leftPenetration) &&
                  (bottomPenetration < rightPenetration) &&
                  (bottomPenetration < topPenetration))
         {
-            newVelocity.y = -newVelocity.y;
+            newVelocity.y = -Mathf.Abs(newVelocity.y);
         }
         velocity = newVelocity;
     }
